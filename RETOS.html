@@ -1,0 +1,104 @@
+<!doctype html><html lang="es-MX"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Retos · devin-mastermind-retro</title>
+<meta name="description" content="Retos del workshop de Devin Desktop para el repo devin-mastermind-retro (Java 8, sin dependencias).">
+<style>
+:root{--bg:#0e0f13;--fg:#f2f2f5;--mut:#a5a8b3;--line:#2a2d36;--card:#171922;--card2:#1d2029;--acc:#7c9cff;--acc2:#b48cff;--done:#58d68d;color-scheme:dark}
+@media(prefers-color-scheme:light){:root{--bg:#f4f5fa;--fg:#191b22;--mut:#5c606e;--line:#dcdfe8;--card:#fff;--card2:#f7f8fc;--acc:#3b5fd9;--acc2:#7a4fd0;--done:#1d9e57;color-scheme:light}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  background:radial-gradient(1100px 500px at 15% -10%,var(--acc) 0%,transparent 55%),
+             radial-gradient(900px 480px at 90% 0%,var(--acc2) 0%,transparent 50%),
+             var(--bg)}
+main{max-width:760px;margin:0 auto;padding:56px 20px 64px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:rgba(127,127,160,.16);border:1px solid var(--line);border-radius:4px;padding:0 .3em;font-size:.88em}
+.hero{text-align:center;margin-bottom:40px}
+.eyebrow{display:inline-block;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:rgba(127,127,160,.08)}
+h1{font-size:clamp(3rem,10vw,4.6rem);line-height:1;margin:18px 0 10px;letter-spacing:-.03em;
+  background:linear-gradient(100deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mut);margin:0 auto;max-width:56ch;font-size:1.02rem}
+.sub code{font-size:.85em}
+.route{margin-top:16px;color:var(--mut);font-size:.9rem}
+.list{display:flex;flex-direction:column;gap:14px}
+.card{position:relative;display:flex;gap:16px;align-items:center;padding:18px 20px;border:1px solid var(--line);border-radius:14px;
+  background:linear-gradient(180deg,var(--card),var(--card2));transition:transform .15s ease,border-color .15s ease}
+.card:hover{transform:translateY(-2px);border-color:var(--acc)}
+.card input{appearance:none;flex:none;width:26px;height:26px;border:2px solid var(--mut);border-radius:8px;cursor:pointer;display:grid;place-items:center;margin:0;background:transparent;transition:all .15s ease}
+.card input:checked{border-color:var(--done);background:var(--done)}
+.card input:checked::after{content:"✓";color:#fff;font-size:15px;font-weight:700;line-height:1}
+.card.done{opacity:.62}
+.card.done .name{text-decoration:line-through}
+.num{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-weight:700;font-size:.95rem;
+  color:var(--acc);background:rgba(124,156,255,.12);border:1px solid rgba(124,156,255,.3)}
+.body{flex:1;min-width:0}
+.name{font-size:1.15rem;font-weight:650;line-height:1.25}
+.tag{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:2px 9px;margin-left:8px;vertical-align:middle}
+.tag.core{color:var(--acc);border:1px solid rgba(124,156,255,.4);background:rgba(124,156,255,.1)}
+.tag.par{color:var(--acc2);border:1px solid rgba(180,140,255,.4);background:rgba(180,140,255,.1)}
+.tag.boss{color:#ff9d7c;border:1px solid rgba(255,157,124,.4);background:rgba(255,157,124,.1)}
+.desc{color:var(--mut);font-size:.92rem;margin-top:2px}
+.go{flex:none;color:var(--mut);text-decoration:none;font-size:1.3rem;padding:4px 6px;border-radius:8px}
+.go:hover{color:var(--acc);background:rgba(124,156,255,.12)}
+.card a.cover{position:absolute;inset:0;border-radius:14px}
+.card input,.card .go{position:relative;z-index:1}
+footer{margin-top:36px;text-align:center;color:var(--mut);font-size:.92rem}
+footer a{color:var(--acc)}
+.guia{display:inline-block;margin-top:10px;padding:10px 22px;border-radius:999px;border:1px solid var(--acc);color:var(--acc);text-decoration:none;font-weight:600;transition:all .15s ease}
+.guia:hover{background:var(--acc);color:#fff}
+@media(prefers-color-scheme:light){.guia:hover{color:#fff}.card input:checked::after{color:#fff}}
+@media(max-width:520px){.num{display:none}.desc{font-size:.88rem}}
+</style></head><body><main>
+<header class="hero">
+<span class="eyebrow">Devin Desktop Workshop · Mexico Tech Week</span>
+<h1>Retos</h1>
+<p class="sub">Un Mastermind de consola en Java 8, sin librerías. Lo interesante no es el código: es <b>qué decisiones tomas tú</b> cuando Devin te las pregunta. Cinco retos, no tienes que hacerlos todos.</p>
+<p class="route">Ruta sugerida (~60 min): 1 → 2 → 3. Si vas rápido, 4 o 5.</p>
+</header>
+<div class="list">
+<div class="card" id="c1"><a class="cover" href="RETOS-GUIA.html#r1"></a>
+<input type="checkbox" data-k="r1"><span class="num">1</span>
+<span class="body"><span class="name">Niveles con nombre</span><span class="tag core">Core · 15–20 min</span>
+<div class="desc">Fácil, Normal, Difícil y Personalizado: intentos, longitud, colores y repetición.</div></span>
+<a class="go" href="RETOS-GUIA.html#r1" title="Ver la guía">→</a></div>
+<div class="card" id="c2"><a class="cover" href="RETOS-GUIA.html#r2"></a>
+<input type="checkbox" data-k="r2"><span class="num">2</span>
+<span class="body"><span class="name">High Scores</span><span class="tag core">Core · 15–20 min</span>
+<div class="desc">Guarda quién ganó y con cuántos intentos; muestra la tabla antes de salir.</div></span>
+<a class="go" href="RETOS-GUIA.html#r2" title="Ver la guía">→</a></div>
+<div class="card" id="c3"><a class="cover" href="RETOS-GUIA.html#r3"></a>
+<input type="checkbox" data-k="r3"><span class="num">3</span>
+<span class="body"><span class="name">Semilla y atajos</span><span class="tag par">Paralelo · 20–25 min</span>
+<div class="desc">Dos sesiones en Worktree: <code>--seed</code> reproducible e iniciales <code>R B G P</code>. Un solo Merge.</div></span>
+<a class="go" href="RETOS-GUIA.html#r3" title="Ver la guía">→</a></div>
+<div class="card" id="c4"><a class="cover" href="RETOS-GUIA.html#r4"></a>
+<input type="checkbox" data-k="r4"><span class="num">4</span>
+<span class="body"><span class="name">Cliente-servidor</span><span class="tag boss">Jefe · 25–35 min</span>
+<div class="desc">La lógica vive en un servidor; el secreto jamás viaja al cliente en juego.</div></span>
+<a class="go" href="RETOS-GUIA.html#r4" title="Ver la guía">→</a></div>
+<div class="card" id="c5"><a class="cover" href="RETOS-GUIA.html#r5"></a>
+<input type="checkbox" data-k="r5"><span class="num">5</span>
+<span class="body"><span class="name">Bonus: la IA que juega sola</span><span class="tag boss">Jefe · 25–30 min</span>
+<div class="desc">Un solver consistente y un benchmark de intentos promedio con semilla fija.</div></span>
+<a class="go" href="RETOS-GUIA.html#r5" title="Ver la guía">→</a></div>
+</div>
+<footer>
+<p>Empieza cada reto en <b>Plan mode</b>. Y ojo: una clase de tests nueva no corre hasta registrarla en <code>TestRunner</code>.</p>
+<a class="guia" href="RETOS-GUIA.html">Abrir la guía completa →</a>
+</footer>
+</main><script>
+(function(){
+  var KEY='retos-progress';
+  var saved={};
+  try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+  [].forEach.call(document.querySelectorAll('.card input'),function(cb){
+    var card=cb.closest('.card');
+    if(saved[cb.dataset.k]){cb.checked=true;card.classList.add('done')}
+    cb.addEventListener('click',function(e){e.stopPropagation()});
+    cb.addEventListener('change',function(){
+      saved[cb.dataset.k]=cb.checked;
+      card.classList.toggle('done',cb.checked);
+      try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}
+    });
+  });
+})();
+</script></body></html>

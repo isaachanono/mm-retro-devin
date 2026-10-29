@@ -1,0 +1,257 @@
+<!doctype html><html lang="es-MX"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Retos · devin-mastermind-retro</title>
+<meta name="description" content="Retos del workshop de Devin Desktop para el repo devin-mastermind-retro (Java 8, sin dependencias).">
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#666;--line:#ddd;--box:#f6f6f6;--link:#0b57d0;color-scheme:light dark}
+@media(prefers-color-scheme:dark){:root{--bg:#111;--fg:#e8e8e8;--mut:#9a9a9a;--line:#333;--box:#1b1b1b;--link:#7fb0ff}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:40px 20px 80px}
+a{color:var(--link)}
+h1{font-size:2rem;line-height:1.2;margin:0 0 4px}
+h2{font-size:1.4rem;line-height:1.3;margin:0 0 4px}
+h3{font-size:1rem;margin:28px 0 6px}
+.sub{color:var(--mut);margin:0 0 20px}
+.meta{color:var(--mut);font-size:.9rem;margin:0 0 14px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+code{background:var(--box);border:1px solid var(--line);border-radius:3px;padding:0 .3em;font-size:.88em}
+pre{margin:0;background:var(--box);border:1px solid var(--line);border-radius:6px;padding:12px 14px;overflow-x:auto;white-space:pre-wrap;word-break:break-word;font-size:.85rem;line-height:1.5}
+pre.p{font-family:inherit;font-size:.95rem}
+.box{position:relative;margin:8px 0}
+.copy{position:absolute;top:6px;right:6px;font:inherit;font-size:.75rem;color:var(--mut);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:2px 8px;cursor:pointer}
+.box pre{padding-right:70px}
+hr{border:0;border-top:1px solid var(--line);margin:44px 0}
+ul,ol{padding-left:1.3em}
+li{margin:.3em 0}
+ul.check{list-style:none;padding:0}
+ul.check li label{display:flex;gap:8px;align-items:flex-start}
+ul.check input{margin-top:.4em;flex:none}
+ul.check .box{margin:4px 0 8px 24px}
+details{margin:6px 0}
+summary{cursor:pointer;color:var(--mut)}
+details>div,details>ul{margin-top:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.two>div{border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+.two b{display:block;margin-bottom:4px}
+.note{border-left:3px solid var(--line);padding:2px 0 2px 12px;color:var(--mut)}
+@media(max-width:600px){.two{grid-template-columns:1fr}}
+</style></head><body><main>
+<h1>Retos</h1><p class="sub">Devin Desktop Workshop · Mexico Tech Week · <code>devin-mastermind-retro</code></p>
+<p>Un Mastermind de consola en Java 8, sin librerías y con su propio runner de tests. Es pequeño a propósito: cabe entero en la cabeza de un agente, así que lo interesante es <b>qué decisiones tomas tú</b> cuando Devin te las pregunta. Hay cinco retos; no tienes que hacerlos todos.</p>
+<h3>Cómo trabajar cada reto</h3><p>Entiende (dale contexto con @-menciones), planea (Plan mode), actúa (Implement) y verifica (tests, Quick Review, Merge).</p>
+<hr><h2>Antes de empezar</h2>
+<p>Necesitas <code>java</code> y <code>javac</code> (Java 8 o más nuevo). No hay Maven, ni Gradle, ni npm: todo es <code>javac</code> y <code>java</code>.</p>
+<pre>java -version
+javac -version</pre>
+<p style="margin-top:12px"><b>macOS / Linux</b>: compila y corre los tests con este comando (en la raíz del repo):</p>
+<div class="box"><button type="button" class="copy">Copiar</button><pre>mkdir -p build/classes build/test-classes &amp;&amp; javac -d build/classes -encoding UTF-8 src/com/mastermind/*.java &amp;&amp; javac -cp build/classes -d build/test-classes -encoding UTF-8 test/com/mastermind/*.java &amp;&amp; java -cp build/classes:build/test-classes com.mastermind.TestRunner</pre></div>
+<p style="margin-top:12px"><b>Jugar</b> (macOS / Linux): <code>java -cp build/classes com.mastermind.MastermindGame</code></p>
+<p><b>Windows</b>: <code>build.bat</code>, <code>run.bat</code> y <code>test.bat</code>. Si el repo ya trae <code>test.sh</code>, también puedes usar <code>./test.sh</code>.</p>
+
+<h3>Reglas</h3><ol><li>Empieza cada reto en <b>Plan mode</b>. Lee el plan, corrígelo y solo entonces aprieta Implement.</li><li>Las decisiones de diseño son tuyas. Si Devin asume algo que no te gusta, dilo en el plan, no después.</li><li>Una sesión por reto. Para los retos Paralelo usa <b>Worktree</b> y revisa con <b>Quick Review</b> antes del Merge.</li><li>Que Devin corra los tests y te enseñe el resultado. Si dice &quot;listo&quot; sin mostrar la salida, pídele la salida.</li><li><b>Regla de oro de este repo:</b> una clase de tests nueva compila pero <b>no corre</b> hasta que la registras en <code>test/com/mastermind/TestRunner.java</code> (y en <code>test.bat</code>, o <code>test.sh</code> si existe). Pide ver el <code>[PASS]</code> de tus tests nuevos.</li></ol>
+<h3>Ojo con esto</h3><ul><li>El juego es de consola y usa colores ANSI. Si tu terminal no los muestra bien, no pasa nada: el nombre del color siempre se imprime.</li><li>Si ya hiciste la demo en vivo, tu repo puede tener ya los niveles de dificultad. El reto 1 sirve igual: te pide una variante más grande.</li><li>Cuando pruebes a mano el reto 2, ejecútalo desde una carpeta temporal para no ensuciar el repo con archivos de puntajes.</li></ul>
+<hr><h2>Retos</h2><p><b>Ruta sugerida (~60 min):</b> 1 → 2 → 3. Si vas rápido, 4 o 5. Los dos últimos son para quien termine antes.</p><ol>
+<li><a href="#r1">Niveles con nombre</a> <span class="meta">(Core, 15–20 min)</span></li>
+<li><a href="#r2">High Scores</a> <span class="meta">(Core, 15–20 min)</span></li>
+<li><a href="#r3">Semilla y atajos</a> <span class="meta">(Paralelo, 20–25 min)</span></li>
+<li><a href="#r4">Cliente-servidor</a> <span class="meta">(Jefe, 25–35 min)</span></li>
+<li><a href="#r5">Bonus: la IA que juega sola</a> <span class="meta">(Jefe, 25–30 min)</span></li>
+</ol>
+<hr>
+<section id="r1">
+<h2>Reto 1 · Niveles de dificultad con nombre</h2>
+<p class="meta">Core · 15–20 min · Plan mode, Declarar rangos, Tests</p>
+<p>La demo dejó dos preguntas. Ahora convierte la dificultad en algo con personalidad: Fácil, Normal, Difícil y Personalizado.</p>
+<h3>La misión</h3>
+<p>Al arrancar, una sola vez, el juego pregunta el nivel. Cada nivel cambia <b>al menos</b> el número de intentos (hoy son 10) y si el código secreto puede repetir colores. También puede cambiar la longitud y el número de colores.</p>
+<p><code>Enter</code> sin escribir nada elige <b>Normal</b>, que debe comportarse exactamente como el juego de hoy. Una entrada inválida vuelve a preguntar y nunca gasta un intento. El texto &quot;You have N attempts&quot; debe reflejar el nivel.</p>
+<p><b>Si ya hiciste la demo:</b> tu repo ya pregunta longitud y colores. Parte de ahí y agrega los niveles con nombre, los intentos y la regla de repetición encima.</p>
+<h3>Una ayudita para arrancar</h3>
+<p class="meta">Es solo el comienzo. Escribe tu propio prompt y complétalo con lo que pide la misión.</p>
+<div class="box"><button type="button" class="copy">Copiar</button><pre class="p">Quiero niveles de dificultad con nombre (Fácil, Normal, Difícil y Personalizado) en @src/com/mastermind/MastermindGame.java. Entra en Plan mode y dime los valores de cada nivel y qué rangos aceptas, antes de tocar código.</pre></div>
+<h3>Lo que tú decides</h3><ul>
+<li>¿Qué valores tiene cada nivel (intentos, longitud, colores, repetición sí/no)? Que el plan los declare en una tabla.</li>
+<li>¿Qué rangos acepta Personalizado para cada valor? Que el plan diga &quot;acepto de X a Y&quot;.</li>
+<li>Sin repetición, ¿qué pasa si hay menos colores que posiciones? ¿Se rechaza al preguntar, o revienta al generar el código?</li>
+<li>¿El nivel se pregunta de nuevo en &quot;Play again?&quot; o solo una vez por ejecución?</li>
+</ul>
+<h3>¿Cómo sabes que terminó?</h3><ul class="check">
+<li><label><input type="checkbox"><span>Los tests pasan, y hay tests nuevos que viste correr con <code>[PASS]</code>.</span></label><div class="box"><button type="button" class="copy">Copiar</button><pre class="">mkdir -p build/classes build/test-classes &amp;&amp; javac -d build/classes -encoding UTF-8 src/com/mastermind/*.java &amp;&amp; javac -cp build/classes -d build/test-classes -encoding UTF-8 test/com/mastermind/*.java &amp;&amp; java -cp build/classes:build/test-classes com.mastermind.TestRunner</pre></div></li>
+<li><label><input type="checkbox"><span>Enter en el menú elige Normal: el juego dice &quot;You have 10 attempts.&quot; y el comportamiento es el de siempre.</span></label><div class="box"><button type="button" class="copy">Copiar</button><pre class="">printf &#x27;\nRED RED RED RED\n&#x27; | java -cp build/classes com.mastermind.MastermindGame</pre></div></li>
+<li><label><input type="checkbox"><span>Un guess inválido (por ejemplo <code>FOO</code>) vuelve a preguntar y el contador de intentos <b>no</b> baja.</span></label></li>
+<li><label><input type="checkbox"><span>En Difícil el contador de intentos empieza en el valor que declaró el plan, y al agotarlos aparece &quot;Game Over&quot; con el código secreto.</span></label></li>
+<li><label><input type="checkbox"><span>En Personalizado, pedir menos colores que posiciones <b>sin</b> repetición da un error claro y vuelve a preguntar (no crashea).</span></label></li>
+</ul>
+<h3>Archivos que vas a ver</h3><p><code>src/com/mastermind/MastermindGame.java</code> <code>src/com/mastermind/ConsoleInterface.java</code> <code>src/com/mastermind/GameLogic.java</code> <code>src/com/mastermind/ColorPalette.java</code> <code>test/com/mastermind/GameLogicTest.java</code></p>
+<h3>Si te atoras</h3>
+<details><summary>Pista 1</summary><div>Busca <code>MAX_ATTEMPTS</code> en <code>GameLogic</code>: no existe como constante. El 10 está escrito dentro del constructor sin argumentos.</div></details>
+<details><summary>Pista 2</summary><div>Piensa en el orden: el nivel se pregunta <b>antes</b> de construir <code>GameLogic</code>, y <code>ConsoleInterface</code> crea su propio <code>Scanner(System.in)</code>. Dos <code>Scanner</code> sobre el mismo stdin se roban líneas.</div></details>
+<details><summary>Pista 3</summary><div>Un diseño que funciona: un <code>enum Difficulty</code> con los valores de cada nivel, un constructor de <code>GameLogic</code> con <code>maxAttempts</code> y <code>allowRepeats</code>, y validar <code>colores &gt;= longitud</code> cuando no hay repetición.</div></details>
+<details><summary>Trampas conocidas (al final)</summary><ul>
+<li>El constructor de <code>ConsoleInterface</code> crea su propio <code>Scanner(System.in)</code>. Si creas otro para el menú, con entrada por pipe pierdes líneas.</li>
+<li><code>ColorPalette</code> tiene siete colores fijos y la lógica espera <code>RED</code>, <code>BLUE</code>, <code>GREEN</code>, <code>PURPLE</code> en ese orden. Si necesitas un octavo color (<code>ORANGE</code>), agrégalo al final sin romper <code>new ColorPalette()</code>.</li>
+<li><code>getRandomColor()</code> usa <code>Math.random()</code>. Para &quot;sin repetición&quot; no sirve: hay que barajar o muestrear sin reemplazo, y con menos colores que posiciones se cicla o revienta.</li>
+<li>Una clase de test nueva no corre hasta que la registras en <code>TestRunner</code>. Si agregaste tests en <code>GameLogicTest</code>, ya corren.</li>
+</ul></details>
+</section>
+<hr>
+<section id="r2">
+<h2>Reto 2 · High Scores por nombre de jugador</h2>
+<p class="meta">Core · 15–20 min · Plan mode, Persistencia, Tests con stdin</p>
+<p>Guarda quién ganó y con cuántos intentos. Los puntajes se muestran justo antes de salir.</p>
+<h3>La misión</h3>
+<p>El juego pide un nombre, guarda las victorias en un archivo y, <b>antes de salir</b>, muestra la tabla de mejores puntajes. No hay base de datos ni librerías: Java 8 y un archivo de texto.</p>
+<p>La parte difícil no es escribir el archivo. Es decidir qué significa &quot;mejor puntaje&quot;, qué pasa con los empates y con las derrotas, y qué significa &quot;antes de salir&quot; cuando el jugador cierra la terminal con Ctrl+D.</p>
+<p>Recomendado: haz antes el reto 1. Con niveles, el ranking tiene sentido por dificultad. Si no lo hiciste, el ranking es uno solo.</p>
+<h3>Una ayudita para arrancar</h3>
+<p class="meta">Es solo el comienzo. Escribe tu propio prompt y complétalo con lo que pide la misión.</p>
+<div class="box"><button type="button" class="copy">Copiar</button><pre class="p">Quiero High Scores por nombre de jugador, que se muestren antes de salir. Lee @src/com/mastermind/MastermindGame.java y entra en Plan mode: antes de escribir código, pregúntame todo lo que haya que decidir.</pre></div>
+<h3>Lo que tú decides</h3><ul>
+<li>¿Dónde vive el archivo y cómo se evita subirlo a git? (El directorio desde donde ejecutas, tu carpeta de usuario, junto a las clases…)</li>
+<li>¿Qué es &quot;mejor&quot;? ¿Solo menos intentos, o una dificultad mayor vale más? ¿Ranking global o por dificultad?</li>
+<li>Empates: ¿gana quien llegó primero, se comparte posición o se desempata por otra cosa?</li>
+<li>Derrotas: ¿se registran o no? ¿Qué es un nombre válido (vacío, con espacios, mayúsculas, muy largo)?</li>
+<li>&quot;Antes de salir&quot;: ¿solo con <code>n</code> en Play again, o también si cierras stdin con Ctrl+D?</li>
+</ul>
+<h3>¿Cómo sabes que terminó?</h3><ul class="check">
+<li><label><input type="checkbox"><span>Los tests pasan y viste <code>[PASS]</code> de las clases nuevas (no solo &quot;todo verde&quot;).</span></label><div class="box"><button type="button" class="copy">Copiar</button><pre class="">mkdir -p build/classes build/test-classes &amp;&amp; javac -d build/classes -encoding UTF-8 src/com/mastermind/*.java &amp;&amp; javac -cp build/classes -d build/test-classes -encoding UTF-8 test/com/mastermind/*.java &amp;&amp; java -cp build/classes:build/test-classes com.mastermind.TestRunner</pre></div></li>
+<li><label><input type="checkbox"><span>Hay una prueba que juega una partida completa por stdin con un secreto fijo, gana, y verifica que el puntaje quedó guardado.</span></label></li>
+<li><label><input type="checkbox"><span>Gana dos veces con nombres distintos: la tabla los ordena como lo decidiste en el plan, y un empate se resuelve como dijiste.</span></label></li>
+<li><label><input type="checkbox"><span>Edita el archivo de puntajes a mano y mete una línea basura: el juego arranca igual y la ignora.</span></label></li>
+<li><label><input type="checkbox"><span>El archivo de puntajes no aparece en <code>git status</code> (está en <code>.gitignore</code> o fuera del repo).</span></label></li>
+<li><label><input type="checkbox"><span>Cierra la entrada con Ctrl+D después de una victoria: la tabla se muestra igual antes de salir.</span></label></li>
+</ul>
+<h3>Archivos que vas a ver</h3><p><code>src/com/mastermind/MastermindGame.java</code> <code>src/com/mastermind/ConsoleInterface.java</code> <code>src/com/mastermind/HighScores.java (nuevo)</code> <code>test/com/mastermind/TestRunner.java</code> <code>.gitignore</code></p>
+<h3>Si te atoras</h3>
+<details><summary>Pista 1</summary><div>Separa la persistencia en su propia clase pequeña. Piensa en qué momento del flujo ya conoces nombre, intentos y dificultad, y en qué momento &quot;salir&quot; realmente ocurre.</div></details>
+<details><summary>Pista 2</summary><div>Pide el nombre una sola vez al inicio de <code>run()</code>, guarda solo en la rama de victoria de <code>playGame()</code>, y muestra la tabla en un <code>finally</code> alrededor del ciclo de play-again para cubrir tanto <code>n</code> como EOF.</div></details>
+<details><summary>Pista 3</summary><div><code>playGame()</code> llama <code>reset()</code> y luego <code>generateSecretCode()</code>: fijar el secreto antes se pierde. Para el test por stdin, subclasea <code>GameLogic</code> y sobreescribe <code>generateSecretCode()</code>.</div></details>
+<details><summary>Trampas conocidas (al final)</summary><ul>
+<li>Clase de test nueva sin registrar en <code>TestRunner</code>, <code>test.bat</code> y <code>test.sh</code>: compila, no corre y todo se ve verde.</li>
+<li><code>File.createTempFile</code> exige un prefijo de al menos 3 caracteres; con <code>&quot;hs&quot;</code> revientan los tests.</li>
+<li>Si el EOF ocurre en &quot;Play again?&quot;, <code>main</code> puede salir con <code>System.exit(1)</code> antes de mostrar la tabla, a menos que la muestres en un <code>finally</code>.</li>
+<li>Tests que reemplazan <code>System.in</code> o <code>System.out</code> deben restaurarlos en un <code>finally</code>; si no, contaminan al resto de la suite.</li>
+<li>Un formato con comas se rompe con nombres que llevan comas. Elige un separador que el nombre no pueda contener, o escapa.</li>
+</ul></details>
+</section>
+<hr>
+<section id="r3">
+<h2>Reto 3 · Dos frentes: semilla reproducible y atajos de teclado</h2>
+<p class="meta">Paralelo · 20–25 min · Worktree, Paralelo, Quick Review, Merge</p>
+<p>Dos agentes, dos zonas del código, un solo Merge. Ninguno debe pisar al otro.</p>
+<h3>La misión</h3>
+<p>Dos funciones independientes. <b>Sesión A:</b> poder jugar con una semilla (<code>--seed 42</code>) y que el mismo número dé siempre el mismo código secreto. <b>Sesión B:</b> aceptar las iniciales de los colores como atajo (<code>R B G P</code> en vez de <code>RED BLUE GREEN PURPLE</code>).</p>
+<p>Abre cada una en su propia sesión <b>Worktree</b>. Cuando las dos terminen, haz Quick Review de cada diff y luego Merge. Las dos sesiones comparten una trampa: quien registre su clase de tests en <code>TestRunner</code> o <code>test.bat</code> choca con la otra. Decidan quién lo hace al final.</p>
+<h3>Dos sesiones, dos zonas</h3><div class="two">
+<div><b>SESIÓN A · SEMILLA</b>Inyectar un <code>Random</code> con semilla en vez de <code>Math.random()</code>. Leer <code>--seed</code> en <code>main</code>.<br><code>src/com/mastermind/ColorPalette.java</code> <code>src/com/mastermind/MastermindGame.java</code></div>
+<div><b>SESIÓN B · ATAJOS</b>Aceptar la inicial de cada color al capturar el guess, junto con el nombre completo.<br><code>src/com/mastermind/ConsoleInterface.java</code> <code>test/com/mastermind/ConsoleInterfaceTest.java</code></div>
+</div>
+<h3>Una ayudita para arrancar</h3>
+<p class="meta">Es solo el comienzo. Escribe tu propio prompt y complétalo con lo que pide la misión.</p>
+<p><b>Sesión A (Worktree)</b></p>
+<div class="box"><button type="button" class="copy">Copiar</button><pre class="p">Quiero poder jugar con --seed para reproducir el código secreto (@src/com/mastermind/ColorPalette.java usa Math.random). Plan mode primero. No toques ConsoleInterface: otra sesión trabaja ahí.</pre></div>
+<p><b>Sesión B (Worktree)</b></p>
+<div class="box"><button type="button" class="copy">Copiar</button><pre class="p">Quiero escribir los guesses con iniciales (R B G P) en @src/com/mastermind/ConsoleInterface.java. Plan mode primero. No toques ColorPalette ni MastermindGame: otra sesión trabaja ahí.</pre></div>
+<h3>Lo que tú decides</h3><ul>
+<li>A: ¿Dónde se crea el <code>Random</code>? Si lo creas con la semilla en cada ronda, todas las rondas repiten el mismo código.</li>
+<li>A: ¿Qué hace <code>--seed</code> sin valor, con letras o con un número fuera de rango: error claro o ignorar?</li>
+<li>B: ¿Qué pasa si la inicial es ambigua? Hoy todas las iniciales son únicas, pero la paleta es extensible.</li>
+<li>B: ¿Se puede mezclar <code>R blue G PURPLE</code> en una misma línea?</li>
+</ul>
+<h3>¿Cómo sabes que terminó?</h3><ul class="check">
+<li><label><input type="checkbox"><span>Cada sesión trabajó en su Worktree y tocó <b>solo</b> sus archivos (revísalo con <code>git diff --stat</code> en cada una).</span></label><div class="box"><button type="button" class="copy">Copiar</button><pre class="">git diff --stat</pre></div></li>
+<li><label><input type="checkbox"><span>Quick Review de cada diff antes del Merge, sin hallazgos serios sin resolver.</span></label></li>
+<li><label><input type="checkbox"><span>Con la misma semilla, dos partidas distintas imprimen el mismo código secreto (puedes verlo perdiendo a propósito).</span></label></li>
+<li><label><input type="checkbox"><span>Escribir <code>r b g p</code> es equivalente a <code>RED BLUE GREEN PURPLE</code>, y una inicial inválida da un error claro sin gastar intento.</span></label></li>
+<li><label><input type="checkbox"><span>Después del Merge los tests de las dos sesiones pasan juntos y los registraste en <code>TestRunner</code>.</span></label><div class="box"><button type="button" class="copy">Copiar</button><pre class="">mkdir -p build/classes build/test-classes &amp;&amp; javac -d build/classes -encoding UTF-8 src/com/mastermind/*.java &amp;&amp; javac -cp build/classes -d build/test-classes -encoding UTF-8 test/com/mastermind/*.java &amp;&amp; java -cp build/classes:build/test-classes com.mastermind.TestRunner</pre></div></li>
+</ul>
+<h3>Si te atoras</h3>
+<details><summary>Pista 1</summary><div>Si el Merge choca, casi seguro es la lista de clases de test. Resuélvelo a mano: deja las dos clases.</div></details>
+<details><summary>Pista 2</summary><div>Para la semilla, el lugar natural del <code>Random</code> es donde hoy está <code>Math.random()</code>.</div></details>
+<details><summary>Pista 3</summary><div>Para los atajos, <code>parseGuess</code> en <code>ConsoleInterface</code> concentra todo el cambio.</div></details>
+<details><summary>Trampas conocidas (al final)</summary><ul>
+<li>Crear <code>new Random(seed)</code> por cada ronda hace que todas las rondas repitan el mismo código.</li>
+<li>Las iniciales (R, B, G, P, Y, C, W, O) son únicas hoy, pero un color nuevo como <code>BROWN</code> chocaría con <code>BLUE</code>.</li>
+<li>Las dos sesiones editan la misma línea de <code>test.bat</code> o de <code>TestRunner</code> si registran su clase de tests: conflicto garantizado.</li>
+</ul></details>
+</section>
+<hr>
+<section id="r4">
+<h2>Reto 4 · Jefe: cliente-servidor</h2>
+<p class="meta">Jefe · 25–35 min · Megaplan, Arquitectura, Tests de integración</p>
+<p>Saca la lógica del juego a un servidor. El cliente solo pregunta y muestra. Todo en Java 8 y sin librerías.</p>
+<h3>La misión</h3>
+<p>La lógica (el secreto, los intentos, la calificación) vive en un <b>servidor</b>. El cliente de consola solo captura el guess y pinta la respuesta. El JDK ya trae lo necesario: busca <code>com.sun.net.httpserver</code> y <code>HttpURLConnection</code>.</p>
+<p>La regla que lo hace interesante: <b>el secreto no puede viajar al cliente mientras la partida siga en curso.</b> Y el servidor valida todo, aunque el cliente ya valide.</p>
+<p>Si lo vas a hacer, pide un <b>megaplan</b>. Mejor un plan profundo que 400 líneas que no entiendas.</p>
+<h3>Una ayudita para arrancar</h3>
+<p class="meta">Es solo el comienzo. Escribe tu propio prompt y complétalo con lo que pide la misión.</p>
+<div class="box"><button type="button" class="copy">Copiar</button><pre class="p">Quiero separar este juego en un servidor (la lógica) y un cliente de consola, solo con lo que trae el JDK, Java 8. Pide un megaplan: el protocolo y la estructura de paquetes, y espera mi visto bueno antes de escribir código.</pre></div>
+<h3>Lo que tú decides</h3><ul>
+<li>¿Qué protocolo? HTTP/REST con <code>com.sun.net.httpserver</code> o sockets con un protocolo de líneas.</li>
+<li>¿Cómo identifica el servidor cada partida (un id en la ruta, un token) para atender a más de un cliente?</li>
+<li>¿Cómo manejas el JSON sin librería? Mínimo para lo que viaja, no un parser completo.</li>
+<li>¿Cuándo se revela el secreto? Solo al perder. ¿Y si el cliente abandona?</li>
+<li>¿Dónde viaja la dificultad (longitud y colores)? ¿Fija por ahora o en el cuerpo de &quot;crear partida&quot;?</li>
+</ul>
+<h3>¿Cómo sabes que terminó?</h3><ul class="check">
+<li><label><input type="checkbox"><span>Compila con <code>javac --release 8</code> (si tu JDK es más nuevo, solo salen avisos de opción obsoleta).</span></label></li>
+<li><label><input type="checkbox"><span>Hay un test de integración que levanta el servidor en un <b>puerto efímero</b> (puerto 0), juega y pasa con el runner. Viste su <code>[PASS]</code>.</span></label><div class="box"><button type="button" class="copy">Copiar</button><pre class="">mkdir -p build/classes build/test-classes &amp;&amp; javac -d build/classes -encoding UTF-8 src/com/mastermind/*.java &amp;&amp; javac -cp build/classes -d build/test-classes -encoding UTF-8 test/com/mastermind/*.java &amp;&amp; java -cp build/classes:build/test-classes com.mastermind.TestRunner</pre></div></li>
+<li><label><input type="checkbox"><span>Una partida ganada <b>nunca</b> mostró el secreto al cliente; una perdida sí.</span></label></li>
+<li><label><input type="checkbox"><span>Un guess inválido (largo o color incorrecto) recibe un error claro del servidor, no un stack trace.</span></label></li>
+<li><label><input type="checkbox"><span>Levantar un segundo servidor en el mismo puerto da un mensaje legible y sale con código 1, sin stack trace.</span></label></li>
+<li><label><input type="checkbox"><span>Dos clientes juegan a la vez y sus partidas no se mezclan.</span></label></li>
+<li><label><input type="checkbox"><span>El juego original de consola sigue funcionando.</span></label></li>
+</ul>
+<h3>Archivos que vas a ver</h3><p><code>src/com/mastermind/server/ (nuevo)</code> <code>src/com/mastermind/client/ (nuevo)</code> <code>test/com/mastermind/ (test de integración)</code> <code>build.bat y test.bat (para compilar subpaquetes)</code></p>
+<h3>Si te atoras</h3>
+<details><summary>Pista 1</summary><div>Piensa en dos programas: uno es dueño del juego (secreto, intentos, calificación) y otro solo pregunta y muestra. Antes de tocar código, decide qué mensajes se intercambian y qué <b>no</b> puede viajar nunca.</div></details>
+<details><summary>Pista 2</summary><div>El servidor puede reusar <code>GameLogic</code> tal cual, con una instancia por partida identificada por un id. Para probar sin puerto fijo, haz que el servidor acepte puerto 0 y te diga en cuál quedó. Para que el test no dependa del azar, inyecta una fábrica de <code>GameLogic</code> con secreto fijo.</div></details>
+<details><summary>Pista 3</summary><div>Tres rutas bastan: crear partida, mandar un intento y consultar el estado. El servidor responde 400, 404 o 409 según el caso, y el secreto solo aparece si el estado es perdido.</div></details>
+<details><summary>Trampas conocidas (al final)</summary><ul>
+<li><code>Assertions</code> exige un mensaje en cada aserción (<code>assertTrue(boolean, String)</code>); una sobrecarga sin mensaje no existe.</li>
+<li>El secreto es aleatorio (<code>Math.random()</code> sin semilla). Sin una fábrica inyectable, el test de integración solo puede probar el camino de perder, o es intermitente.</li>
+<li>Ocupar un puerto lanza <code>BindException</code>. Si no la capturas, sale un stack trace largo en vez de un mensaje.</li>
+<li>Un test que necesita un servidor ya corriendo en el puerto 8080 no es un test: el <code>TestRunner</code> no lo levanta por ti.</li>
+<li>Un JSON completo con reflexión son cientos de líneas. Para este protocolo basta con leer un arreglo de colores.</li>
+</ul></details>
+</section>
+<hr>
+<section id="r5">
+<h2>Reto 5 · Bonus: la IA que juega sola</h2>
+<p class="meta">Jefe · 25–30 min · Megaplan, Refactor, Benchmark</p>
+<p>Escribe un solver que adivine el código y mide en cuántos intentos lo logra en promedio.</p>
+<h3>La misión</h3>
+<p>Un solver que juega contra el juego: en cada turno elige un guess que sea <b>consistente</b> con todas las respuestas anteriores. Después, un benchmark que corra cientos de partidas con una semilla fija y reporte el promedio y el máximo de intentos.</p>
+<p>El cuello de botella no es el algoritmo. <code>GameLogic.scoreGuess</code> <b>descuenta un intento</b> y depende del código secreto de la instancia: no sirve para probar candidatos. Necesitas una función pura de calificación, y reusarla desde <code>scoreGuess</code> sin romper nada.</p>
+<h3>Una ayudita para arrancar</h3>
+<p class="meta">Es solo el comienzo. Escribe tu propio prompt y complétalo con lo que pide la misión.</p>
+<div class="box"><button type="button" class="copy">Copiar</button><pre class="p">Quiero un solver que juegue solo y un benchmark de intentos promedio. Lee @src/com/mastermind/GameLogic.java y dime en Plan mode cómo calificarías candidatos sin gastar intentos.</pre></div>
+<h3>Lo que tú decides</h3><ul>
+<li>¿Qué significa &quot;determinista&quot;? ¿El primer candidato consistente en orden, o uno aleatorio con semilla?</li>
+<li>¿Dónde pones la calificación pura: método estático en <code>GameLogic</code> o clase aparte?</li>
+<li>¿Qué tamaño de espacio de búsqueda aguantas? 8^6 son 262,144 candidatos; ¿cuándo dejas de enumerar?</li>
+</ul>
+<h3>¿Cómo sabes que terminó?</h3><ul class="check">
+<li><label><input type="checkbox"><span>Los tests existentes siguen pasando después del refactor de la calificación.</span></label><div class="box"><button type="button" class="copy">Copiar</button><pre class="">mkdir -p build/classes build/test-classes &amp;&amp; javac -d build/classes -encoding UTF-8 src/com/mastermind/*.java &amp;&amp; javac -cp build/classes -d build/test-classes -encoding UTF-8 test/com/mastermind/*.java &amp;&amp; java -cp build/classes:build/test-classes com.mastermind.TestRunner</pre></div></li>
+<li><label><input type="checkbox"><span>El solver gana en todas las partidas del benchmark y ninguna pasa de 10 intentos.</span></label></li>
+<li><label><input type="checkbox"><span>Corriendo dos veces el benchmark con la misma semilla imprime exactamente los mismos números.</span></label></li>
+<li><label><input type="checkbox"><span>El benchmark reporta promedio y máximo por configuración y termina en pocos segundos.</span></label></li>
+</ul>
+<h3>Si te atoras</h3>
+<details><summary>Pista 1</summary><div>Primero mueve la lógica de calificación a una función estática que reciba secreto y guess. Haz que <code>scoreGuess</code> la use. Corre los tests antes de seguir.</div></details>
+<details><summary>Pista 2</summary><div>Un solver simple: mantén la lista de candidatos y, tras cada respuesta, quédate solo con los que darían la misma calificación contra tu guess.</div></details>
+<details><summary>Pista 3</summary><div>Para el benchmark reproducible, inyecta un <code>Random</code> con semilla fija y juega N partidas contra códigos generados con él.</div></details>
+</section>
+<hr><p class="note">Repo: <code>devin-mastermind-retro</code>. Si un reto no te sale, el plan que Devin te propuso también cuenta: compártelo con tu mesa.</p>
+</main><script>
+[].forEach.call(document.querySelectorAll('.copy'),function(b){
+  b.addEventListener('click',function(){
+    var pre=b.parentNode.querySelector('pre'),t=pre.innerText.replace(/\n+$/,'');
+    function ok(){b.textContent='Copiado';setTimeout(function(){b.textContent='Copiar'},1200)}
+    function fb(){var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand('copy');ok()}catch(e){}}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb)}else{fb()}
+  });
+});
+</script></body></html>
